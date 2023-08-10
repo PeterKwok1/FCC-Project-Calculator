@@ -2,5 +2,101 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    // border: 1px solid rgb(255, 0, 0);
+}
+
+#calculator {
+    width: 340px;
+    margin: 50px auto 20px auto;
     border: 1px solid black;
+    border-radius: 10px;
+}
+
+#interface {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
+}
+
+#display {
+    display: grid;
+    gap: 5px;
+    margin: 10px;
+    border: 1px solid black;
+}
+
+#expression {
+    height: 50px;
+}
+
+#entry {
+    height: 75px;
+}
+
+#evaluations {
+    grid-column: 1/5;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5px;
+    padding: 0 10px 10px 10px;
+}
+
+.evaluators {
+    height: 75px;
+    width: 155px;
+    border: 1px solid black;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+#numpad {
+    grid-column: 1/4;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+    padding: 0 10px 10px 10px;
+}
+
+.digits {
+    height: 75px;
+    width: 75px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+#zero {
+    grid-column: 1/3;
+    width: 155px;
+    border-radius: 50px;
+}
+
+#operations {
+    display: grid;
+    gap: 5px;
+    padding: 0 10px 10px 0;
+}
+
+.operators {
+    height: 75px;
+    width: 75px;
+    border: 1px solid black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+}
+
+#by {
+    text-align: center;
+    font-style: italic;
+    font-size: small;
+    margin-bottom: 50px;
 }
