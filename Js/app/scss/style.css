@@ -11,12 +11,6 @@
   border-radius: 10px;
 }
 
-#interface {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-template-rows: auto auto auto auto auto;
-}
-
 #display {
   display: grid;
   gap: 5px;
@@ -30,6 +24,12 @@
 
 #entry {
   height: 75px;
+}
+
+#interface {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto;
 }
 
 #evaluations {
@@ -56,7 +56,7 @@
   display: grid;
   grid-template-columns: auto auto auto;
   gap: 5px;
-  padding: 0 10px 10px 10px;
+  padding: 0 5px 10px 10px;
 }
 
 .digits {
