@@ -7,8 +7,8 @@
 // *zero is falsey 
 
 // todos:
-// after evaluation, if number, overrwite - completed digits
-// after evaluation, if equal, do nothing
+// after evaluation, if number, overwrite, else if operator push - done
+// after evaluation, if equal, do nothing - done
 // prevent multiple operators
 // negatives
 // add keyboard event listener
@@ -21,7 +21,7 @@ const displayTag = document.querySelector('#display')
 const digitsTags = document.querySelectorAll('.digits')
 for (let i = 0; i < digitsTags.length; i++) {
     digitsTags[i].addEventListener('click', () => {
-        // equal -> reset
+        // equal -> replace
         // decimal -> add number
         // zero -> replace
         // number -> add number
@@ -29,7 +29,7 @@ for (let i = 0; i < digitsTags.length; i++) {
 
         if (expression.includes('=')) {
             expression = [digitsTags[i].textContent]
-            console.log(expression, 'equals')
+            console.log(expression, 'equal')
         } else if (expression[expression.length - 1].includes('.')) {
             expression[expression.length - 1] += digitsTags[i].textContent
             console.log(expression, 'number')
@@ -53,11 +53,15 @@ for (let i = 0; i < digitsTags.length; i++) {
 // zero
 const zeroTag = document.querySelector('#zero')
 zeroTag.addEventListener('click', () => {
+    // equal -> replace
     // decimal -> add zero
     // zero -> do nothing
     // number -> add zero
     // not number -> push zero
-    if (expression[expression.length - 1].includes('.')) {
+    if (expression.includes('=')) {
+        expression = [zeroTag.textContent]
+        console.log(expression, 'equal')
+    } else if (expression[expression.length - 1].includes('.')) {
         expression[expression.length - 1] += zeroTag.textContent
         console.log(expression, 'number')
     } else if (Number(expression[expression.length - 1]) === 0) {
@@ -77,12 +81,16 @@ zeroTag.addEventListener('click', () => {
 // decimal
 const decimalTag = document.querySelector('#decimal')
 decimalTag.addEventListener('click', () => {
+    // equal -> replace
     // decimal -> do nothing 
-    // number -> add decimal
+    // zero or number -> add decimal
     // not number -> push zero with a decimal
-    if (expression[expression.length - 1].includes('.')) {
+    if (expression.includes('=')) {
+        expression = ['0' + decimalTag.textContent]
+        console.log(expression, 'equal')
+    } else if (expression[expression.length - 1].includes('.')) {
         console.log(expression, 'decimal')
-    } else if (Number(expression[expression.length - 1]) || Number(expression[expression.length - 1]) === 0) {
+    } else if (Number(expression[expression.length - 1]) === 0 || Number(expression[expression.length - 1])) {
         expression[expression.length - 1] += decimalTag.textContent
         console.log(expression, 'number')
     } else {
@@ -94,12 +102,21 @@ decimalTag.addEventListener('click', () => {
     displayTag.textContent = expression[expression.length - 1]
 })
 
+// operators
 const operatorTags = document.querySelectorAll('.operators')
 
 for (let i = 0; i < operatorTags.length; i++) {
     operatorTags[i].addEventListener('click', () => {
-        expression.push(operatorTags[i].textContent)
-        console.log(expression, "operator")
+        // equal -> simplify expression and push operator
+        // else -> push operator
+        if (expression.includes('=')) {
+            expression.splice(0, expression.length - 1)
+            expression.push(operatorTags[i].textContent)
+            console.log(expression, "equal")
+        } else {
+            expression.push(operatorTags[i].textContent)
+            console.log(expression, "operator")
+        }
         // output expression and display
         expressionTag.textContent = expression.join('')
         displayTag.textContent = expression[expression.length - 1]
@@ -151,27 +168,32 @@ function evalOrd(exp) {
 const equalsTag = document.querySelector('#equals')
 
 equalsTag.addEventListener('click', () => {
-    // copy expression and stringify numbers 
-    let expCp = [...expression]
-    for (let i = 0; i < expCp.length; i++) {
-        if (Number(expCp[i]) || Number(expCp[i]) === 0) {
-            expCp[i] = Number(expCp[i])
+    // equal -> simplify expression 
+    // else -> copy expression and stringify numbers 
+    if (expression.includes('=')) {
+        expression.splice(0, expression.length - 1)
+        console.log(expression, 'equal')
+    } else {
+        let expCp = [...expression]
+        for (let i = 0; i < expCp.length; i++) {
+            if (Number(expCp[i]) || Number(expCp[i]) === 0) {
+                expCp[i] = Number(expCp[i])
+            }
         }
+        console.log(expCp, 'expCp')
+
+        expCp = evalOrd(expCp)
+        expCp[0] = String(expCp[0])
+
+        console.log(expCp, 'expCp')
+
+        console.log(expression, 'expression')
+
+        expression.push('=')
+        expression.push(expCp[0])
+
+        console.log(expression, 'expression')
     }
-    console.log(expCp, 'expCp')
-
-    expCp = evalOrd(expCp)
-    expCp[0] = String(expCp[0])
-
-    console.log(expCp, 'expCp')
-
-    console.log(expression, 'expression')
-
-    expression.push('=')
-    expression.push(expCp[0])
-
-    console.log(expression, 'expression')
-
     // output expression and display
     expressionTag.textContent = expression.join('')
     displayTag.textContent = expression[expression.length - 1]
