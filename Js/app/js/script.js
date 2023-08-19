@@ -5,7 +5,7 @@
 
 // breakdown:
 //
-// keys
+// key
 // 
 // digits
 // zero
@@ -21,13 +21,13 @@
 
 // todos:
 // replace placeholder logic because multiple operators remove it from exp. the problem is that operators and subrtact remove placeholder during the negative case - solution: split the if statements so that one checks if the array is empty. 
-// consider moving eval_syn and syn_rules to key, if so rename operators to key and group the operators into an operators property 
-// style
+// consider moving eval_syntax to key, if so rename operators to key and group the operators into an operators property 
+// add rounding to 4 decimal places
+// style - blink?
 // remove console logs
 // check spacing in js
 
-// keys
-let expression = ['placeholder']
+// key
 // array defines the operations and their order 
 let key = [
     {
@@ -39,57 +39,55 @@ let key = [
         '-': (num1, num2) => { return num1 - num2 }
     }
 ]
+let expression = ['0']
 
 // display 
 const expressionTag = document.querySelector('#expression')
 const displayTag = document.querySelector('#display')
 function display() {
-    if (expression[expression.length - 1] != 'placeholder') {
-        expressionTag.textContent = expression.slice(1, expression.length).join('')
-        displayTag.textContent = expression[expression.length - 1]
-    }
+    expressionTag.textContent = expression.join('')
+    displayTag.textContent = expression[expression.length - 1]
 }
 
 // digits
 function inputDigits(digitStr, exp) {
     // equal -> replace
-    // decimal -> append number
     // zero -> replace
-    // number or negative -> append number
+    // decimal -> append number
+    // number -> append number
+    // negative -> append number
     // not number -> push number
     if (exp.includes('=')) {
-        exp = ['placeholder', digitStr]
+        exp = [digitStr]
         console.log(exp, 'equal')
+    } else if (Number(exp[exp.length - 1]) === '0') {
+        exp[exp.length - 1] = digitStr
+        console.log(exp, 'zero')
     } else if (exp[exp.length - 1].includes('.')) {
         exp[exp.length - 1] += digitStr
         console.log(exp, 'decimal')
-    } else if (Number(exp[exp.length - 1]) === 0) {
-        exp[exp.length - 1] = digitStr
-        console.log(exp, 'zero')
-    } else if (Number(exp[exp.length - 1]) || (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
+    } else if (Number(exp[exp.length - 1])) {
         exp[exp.length - 1] += digitStr
-        console.log(exp, 'number or negative')
+        console.log(exp, 'number')
+    } else if ((exp.length === 1 && exp[0] === '-') || (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
+        exp[exp.length - 1] += digitStr
+        console.log(exp, 'negative')
     } else {
         exp.push(digitStr)
         console.log(exp, 'not number')
     }
-
     return exp
 }
 
 const digitsTags = document.querySelectorAll('.digits')
 for (let i = 0; i < digitsTags.length; i++) {
-
     digitsTags[i].addEventListener('click', () => {
         expression = inputDigits(digitsTags[i].textContent, expression)
-        // display
         display()
     })
-
     window.addEventListener('keyup', (e) => {
         if (e.key === digitsTags[i].textContent) {
             expression = inputDigits(digitsTags[i].textContent, expression)
-            // display
             display()
         }
     })
@@ -98,42 +96,40 @@ for (let i = 0; i < digitsTags.length; i++) {
 // zero
 function inputZero(zeroStr, exp) {
     // equal -> replace
-    // decimal -> append zero
     // zero -> do nothing
-    // number or negative -> append zero
+    // decimal -> append zero
+    // number -> append zero
+    // negative -> append zero
     // not number -> push zero
     if (exp.includes('=')) {
-        exp = ['placeholder', zeroStr]
+        exp = [zeroStr]
         console.log(exp, 'equal')
+    } else if (Number(exp[exp.length - 1]) === '0') {
+        console.log(exp, 'zero')
+        return exp
     } else if (exp[exp.length - 1].includes('.')) {
         exp[exp.length - 1] += zeroStr
         console.log(exp, 'decimal')
-    } else if (Number(exp[exp.length - 1]) === 0) {
-        console.log(exp, 'zero')
-        return exp
-    } else if (Number(exp[exp.length - 1]) || (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
+    } else if (Number(exp[exp.length - 1])) {
         exp[exp.length - 1] += zeroStr
-        console.log(exp, 'number or negative')
+        console.log(exp, 'number')
+    } else if ((exp.length === 1 && exp[0] === '-') || (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
+        console.log(exp, 'negative')
     } else {
         exp.push(zeroStr)
         console.log(exp, 'not number')
     }
-
     return exp
 }
 
 const zeroTag = document.querySelector('#zero')
-
 zeroTag.addEventListener('click', () => {
     expression = inputZero(zeroTag.textContent, expression)
-    // display
     display()
 })
-
 window.addEventListener('keyup', (e) => {
     if (e.key === zeroTag.textContent) {
         expression = inputZero(zeroTag.textContent, expression)
-        // display
         display()
     }
 })
@@ -141,20 +137,24 @@ window.addEventListener('keyup', (e) => {
 // decimal
 function inputDecimal(decimalStr, exp) {
     // equal -> replace
-    // decimal -> do nothing 
-    // zero or number -> append decimal
-    // negative -> append zero with decimal
-    // not number -> push zero with decimal
+    // zero -> append decimal
+    // decimal -> do nothing
+    // number -> append decimal
+    // negative -> append zero with decimal 
+    // not number -> push zero with decimal 
     if (exp.includes('=')) {
-        exp = ['placeholder', '0' + decimalStr]
+        exp = [`0${decimalStr}`]
         console.log(exp, 'equal')
+    } else if (Number(exp[exp.length - 1]) === '0') {
+        exp[exp.length - 1] += decimalStr
+        console.log(exp, 'zero')
     } else if (exp[exp.length - 1].includes('.')) {
         console.log(exp, 'decimal')
         return exp
-    } else if (Number(exp[exp.length - 1]) === 0 || Number(exp[exp.length - 1])) {
+    } else if (Number(exp[exp.length - 1])) {
         exp[exp.length - 1] += decimalStr
-        console.log(exp, 'zero or number')
-    } else if ((!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
+        console.log(exp, 'number')
+    } else if ((exp.length === 1 && exp[0] === '-') || (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
         exp[exp.length - 1] += `0${decimalStr}`
         console.log(exp, 'negative')
     } else {
@@ -166,39 +166,42 @@ function inputDecimal(decimalStr, exp) {
 }
 
 const decimalTag = document.querySelector('#decimal')
-
 decimalTag.addEventListener('click', () => {
     expression = inputDecimal(decimalTag.textContent, expression)
-    // display
     display()
 })
-
 window.addEventListener('keyup', (e) => {
     if (e.key === decimalTag.textContent) {
         expression = inputDecimal(decimalTag.textContent, expression)
-        // display
         display()
     }
 })
 
 // operators
 function inputOperators(operatorStr, exp) {
-    // equal -> simplify exp and push operator
-    // zero or number -> push operator // new layer
+    // empty -> do nothing 
+    // equal -> push operator 
+    // zero -> push operator
+    // decimal -> push operator
+    // number -> push operator
     // negative -> replace
-    // placeholder -> do nothing 
-    // not number -> replace
-    if (exp.includes('=')) {
-        exp = ['placeholder', exp[exp.length - 1]]
-        exp.push(operatorStr)
-        console.log(exp, "equal")
-    } else if (Number(exp[exp.length - 1]) === 0 || Number(exp[exp.length - 1])) {
-        exp.push(operatorStr)
-        console.log(exp, "zero or number")
-    } else if (exp[exp.length - 1] === 'placeholder') {
-        console.log(exp, 'placeholder')
+    // not number -> replace 
+    if (exp.length === 0) {
+        console.log(exp, 'empty')
         return exp
-    } else if (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-') {
+    } else if (exp.includes('=')) {
+        exp = [exp[exp.length - 1], operatorStr]
+        console.log(exp, "equal")
+    } else if (exp[exp.length - 1] === '0') {
+        exp.push(operatorStr)
+        console.log(exp, "zero")
+    } else if (exp[exp.length - 1].includes('.')) {
+        exp.push(operatorStr)
+        console.log(exp, "zero")
+    } else if (Number(exp[exp.length - 1])) {
+        exp.push(operatorStr)
+        console.log(exp, "number")
+    } else if ((exp.length === 1 && exp[0] === '-') || (!Number(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
         exp.splice(exp.length - 2, 2, operatorStr)
         console.log(exp, 'negative')
     } else {
