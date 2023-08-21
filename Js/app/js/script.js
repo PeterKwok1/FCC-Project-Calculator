@@ -5,7 +5,7 @@
 
 // breakdown:
 //
-// key
+// keys
 // 
 // digits
 // zero
@@ -28,7 +28,11 @@
 // remove console logs
 // git default upstream 
 
-// key
+// keys
+let expression = ['0']
+// html flexibility 
+let numbers = ['7', '8', '9', '4', '5', '6', '1', '2', '3']
+let operatorStrs = ['*', '/', '+']
 // array defines the operations and their order 
 let operators = [
     {
@@ -40,7 +44,67 @@ let operators = [
         '-': (num1, num2) => { return num1 - num2 }
     }
 ]
-let expression = ['0']
+// condenses repeptitive code
+function input(exp, str, onlyZero, equal, zero, decimal, number, negative1, negative2, operator) {
+    // only zero
+    // equal
+    // zero
+    // decimal 
+    // number 
+    // negative case 1 
+    // negative case 2 
+    // operator 
+    if (exp.length === 1 && exp[0] === '0') {
+        exp = onlyZero(exp, str)
+        console.log(exp, 'only zero')
+    } else if (exp.includes('=')) {
+        exp = equal(exp, str)
+        console.log(exp, "equal")
+    } else if (exp[exp.length - 1] === '0') {
+        exp = zero(exp, str)
+        console.log(exp, "zero")
+    } else if (exp[exp.length - 1].includes('.')) {
+        exp = decimal(exp, str)
+        console.log(exp, 'decimal')
+    } else if (Number(exp[exp.length - 1])) {
+        exp = number(exp, str)
+        console.log(exp, "number")
+    } else if (exp.length === 1 && exp[0] === '-') {
+        exp = negative1(exp, str)
+        console.log(exp, 'negative1')
+    } else if ((/^\D+$/.test(exp[exp.length - 2]) && exp[exp.length - 1] === '-')) {
+        exp = negative2(exp, str)
+        console.log(exp, 'negative2')
+    } else {
+        exp = operator(exp, str)
+        console.log(exp, 'operator')
+    }
+    return exp
+}
+let functions = {
+    // simplify and replace
+    // simplify and push
+    // replace
+    // replace two
+    // do nothing
+    // append 
+    // push
+    // evaluate
+    simplify_replace: ,
+    simplify_push: (exp, str) => [exp[exp.length - 1], str],
+    replace: (exp, str) => {
+        exp[exp.length - 1] === str
+        return exp
+    },
+    replace_two: ,
+    nothing: (exp) => exp,
+    append: ,
+    push: (exp, str) => {
+        exp.push(str)
+        return exp
+    },
+    evaluate:
+}
 
 // display 
 const expressionTag = document.querySelector('#expression')
@@ -84,12 +148,12 @@ function inputDigits(digitStr, exp) {
 const digitsTags = document.querySelectorAll('.digits')
 for (let i = 0; i < digitsTags.length; i++) {
     digitsTags[i].addEventListener('click', () => {
-        expression = inputDigits(digitsTags[i].textContent, expression)
+        expression = inputDigits(numbers[i], expression)
         display()
     })
     window.addEventListener('keyup', (e) => {
         if (e.key === digitsTags[i].textContent) {
-            expression = inputDigits(digitsTags[i].textContent, expression)
+            expression = inputDigits(numbers[i], expression)
             display()
         }
     })
@@ -127,12 +191,12 @@ function inputZero(zeroStr, exp) {
 
 const zeroTag = document.querySelector('#zero')
 zeroTag.addEventListener('click', () => {
-    expression = inputZero(zeroTag.textContent, expression)
+    expression = inputZero('0', expression)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === zeroTag.textContent) {
-        expression = inputZero(zeroTag.textContent, expression)
+        expression = inputZero('0', expression)
         display()
     }
 })
@@ -170,12 +234,12 @@ function inputDecimal(decimalStr, exp) {
 
 const decimalTag = document.querySelector('#decimal')
 decimalTag.addEventListener('click', () => {
-    expression = inputDecimal(decimalTag.textContent, expression)
+    expression = inputDecimal('.', expression)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === decimalTag.textContent) {
-        expression = inputDecimal(decimalTag.textContent, expression)
+        expression = inputDecimal('.', expression)
         display()
     }
 })
@@ -187,7 +251,7 @@ function inputOperators(operatorStr, exp) {
     // decimal -> push operator
     // number -> push operator
     // negative case 1 -> do nothing
-    // negative case 2 -> replace
+    // negative case 2 -> replace two
     // operator -> replace 
     if (exp.includes('=')) {
         exp = [exp[exp.length - 1], operatorStr]
@@ -216,28 +280,28 @@ function inputOperators(operatorStr, exp) {
 const operatorTags = document.querySelectorAll('.operators')
 for (let i = 0; i < operatorTags.length; i++) {
     operatorTags[i].addEventListener('click', () => {
-        expression = inputOperators(operatorTags[i].textContent, expression)
+        expression = inputOperators(operatorStrs[i], expression)
         display()
     })
     window.addEventListener('keyup', (e) => {
         if (e.key === operatorTags[i].textContent) {
-            expression = inputOperators(operatorTags[i].textContent, expression)
+            expression = inputOperators(operatorStrs[i], expression)
             display()
         }
     })
 }
 
 function inputSubtract(subtractStr, exp) {
-    // only zero -> replace with negative
+    // only zero -> replace 
     // equal -> simplify and push operator
     // zero -> push operator
     // decimal -> push operator
     // number -> push operator
     // negative case 1 -> do nothing
-    // negative case 2 -> replace with operator
-    // operator -> push negative
+    // negative case 2 -> replace two
+    // operator -> push 
     if (exp.length === 1 && exp[0] === '0') {
-        exp = [subtractStr]
+        exp[exp.length - 1] === '-'
         console.log(exp, 'empty')
     } else if (exp.includes('=')) {
         exp = [exp[exp.length - 1], subtractStr]
@@ -265,23 +329,27 @@ function inputSubtract(subtractStr, exp) {
 }
 const subtractTag = document.querySelector('#subtract')
 subtractTag.addEventListener('click', () => {
-    expression = inputSubtract(subtractTag.textContent, expression)
+    expression = inputSubtract('-', expression)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === subtractTag.textContent) {
-        expression = inputSubtract(subtractTag.textContent, expression)
+        expression = inputSubtract('-', expression)
         display()
     }
 })
 
 // equal
 function inputEquals(equalsStr, exp, ops) {
-    // equal -> simplify exp
+    // equal -> simplify 
+    // negative case 1 -> do nothing
     // else -> evaluate 
     if (exp.includes('=')) {
         exp = [exp[exp.length - 1]]
         console.log(exp, 'equal')
+    } else if (exp.length === 1 && exp[0] === '-') {
+        console.log(exp, 'negative case 1')
+        return exp
     } else {
         let expCp = [...exp]
         for (let i = 0; i < expCp.length; i++) {
@@ -320,8 +388,7 @@ equalsTag.addEventListener('click', () => {
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === equalsTag.textContent || e.key === 'Enter') {
-        expression = inputEquals(equalsTag.textContent, expression, operators)
-        // display
+        expression = inputEquals('=', expression, operators)
         display()
     }
 })
@@ -345,4 +412,5 @@ window.addEventListener('keyup', (e) => {
         display()
     }
 })
+
 
