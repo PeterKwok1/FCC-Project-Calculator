@@ -1,31 +1,6 @@
-// logic:
-// user input 
-// parse input 
-// evaluate using operations in order of operations
-
-// breakdown:
-//
-// keys
-// 
-// digits
-// zero
-// decimal
-// operators
-// subtract
-// 
-// clear
-// equal
-
-// notes:
-// *zero is falsey 
-
 // todos:
-// redo 
-// generalize case function 
-// add rounding to 4 decimal places
-// style - blink?
-// remove console logs
-// git default upstream 
+// style 
+// cull console logs and comments
 
 // keys
 let expression = ['0']
@@ -45,10 +20,10 @@ let operators = [
 ]
 // buttons must pass similar tests using similar functions so this condenses repeptitive code
 function input(onlyZero, equal, decimal, zero, number, negative1, negative2, operator, exp, str, ops) {
-    // only zero
-    // equal
+    // only zero 
+    // equal 
+    // zero 
     // decimal 
-    // zero
     // number 
     // negative case 1 
     // negative case 2 
@@ -89,6 +64,7 @@ function input(onlyZero, equal, decimal, zero, number, negative1, negative2, ope
     return exp
 }
 let functions = {
+    // simplify
     // simplify and replace
     // simplify and push
     // replace
@@ -98,6 +74,10 @@ let functions = {
     // push
     // evaluate
     // clear
+    simplify: (exp) => {
+        console.log('simplify')
+        return [exp[exp.length - 1]]
+    },
     simplify_replace: (exp, str) => {
         console.log('simplify and replace')
         return [str]
@@ -153,7 +133,7 @@ let functions = {
                 console.log(expCp, 'expCp')
             }
         }
-        expCp[0] = String(expCp[0])
+        expCp[0] = String((Math.round(expCp[0] * 10000)) / 10000)
         exp = exp.concat([str, expCp[0]])
         return exp
     },
@@ -169,9 +149,20 @@ function display() {
     expressionTag.textContent = expression.join('')
     displayTag.textContent = expression[expression.length - 1]
 }
+// toggle pressed style
+function togglePressed(tag, classsHoverStr, classPressedStr) {
+    tag.classList.toggle(classsHoverStr)
+    tag.classList.toggle(classPressedStr)
+    setTimeout(
+        () => {
+            tag.classList.toggle(classsHoverStr)
+            tag.classList.toggle(classPressedStr)
+        }, 100
+    )
+}
 
 // digits
-const digitsTags = document.querySelectorAll('.digits')
+const digitsTags = document.querySelectorAll('.digit')
 // only zero -> replace
 // equal -> simplify and replace
 // decimal - append
@@ -182,11 +173,13 @@ const digitsTags = document.querySelectorAll('.digits')
 // operator - push
 for (let i = 0; i < digitsTags.length; i++) {
     digitsTags[i].addEventListener('click', () => {
+        togglePressed(digitsTags[i], 'num-hover', 'num-pressed')
         expression = input(functions.replace, functions.simplify_replace, functions.append, functions.replace, functions.append, functions.append, functions.append, functions.push, expression, numbers[i], operators)
         display()
     })
     window.addEventListener('keyup', (e) => {
         if (e.key === digitsTags[i].textContent) {
+            togglePressed(digitsTags[i], 'num-hover', 'num-pressed')
             expression = input(functions.replace, functions.simplify_replace, functions.append, functions.replace, functions.append, functions.append, functions.append, functions.push, expression, numbers[i], operators)
             display()
         }
@@ -204,11 +197,13 @@ const zeroTag = document.querySelector('#zero')
 // negative case 2 -> append
 // operator -> push
 zeroTag.addEventListener('click', () => {
+    togglePressed(zeroTag, 'num-hover', 'num-pressed')
     expression = input(functions.nothing, functions.simplify_replace, functions.append, functions.nothing, functions.append, functions.append, functions.append, functions.push, expression, numbers[9], operators)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === zeroTag.textContent) {
+        togglePressed(zeroTag, 'num-hover', 'num-pressed')
         expression = input(functions.nothing, functions.simplify_replace, functions.append, functions.nothing, functions.append, functions.append, functions.append, functions.push, expression, numbers[9], operators)
         display()
     }
@@ -225,18 +220,20 @@ const decimalTag = document.querySelector('#decimal')
 // negative case 2 -> append
 // operator -> push
 decimalTag.addEventListener('click', () => {
+    togglePressed(decimalTag, 'num-hover', 'num-pressed')
     expression = input(functions.append, functions.simplify_replace, functions.nothing, functions.append, functions.append, functions.append, functions.append, functions.push, expression, numbers[10], operators)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === decimalTag.textContent) {
+        togglePressed(decimalTag, 'num-hover', 'num-pressed')
         expression = input(functions.append, functions.simplify_replace, functions.nothing, functions.append, functions.append, functions.append, functions.append, functions.push, expression, numbers[10], operators)
         display()
     }
 })
 
 // operators
-const operatorTags = document.querySelectorAll('.operators')
+const nonSubOpTags = document.querySelectorAll('.non-sub-op')
 // only zero -> push
 // equal -> simplify and push
 // decimal -> push
@@ -245,64 +242,22 @@ const operatorTags = document.querySelectorAll('.operators')
 // negative case 1 -> nothing
 // negative case 2 -> replace two
 // operator -> replace
-for (let i = 0; i < operatorTags.length; i++) {
-    operatorTags[i].addEventListener('click', () => {
+for (let i = 0; i < nonSubOpTags.length; i++) {
+    nonSubOpTags[i].addEventListener('click', () => {
+        togglePressed(nonSubOpTags[i], 'operator-hover', 'operator-pressed')
         expression = input(functions.push, functions.simplify_push, functions.push, functions.push, functions.push, functions.nothing, functions.replace_two, functions.replace, expression, operatorStrs[i], operators)
         display()
     })
     window.addEventListener('keyup', (e) => {
-        if (e.key === operatorTags[i].textContent) {
+        if (e.key === nonSubOpTags[i].textContent) {
+            togglePressed(nonSubOpTags[i], 'operator-hover', 'operator-pressed')
             expression = input(functions.push, functions.simplify_push, functions.push, functions.push, functions.push, functions.nothing, functions.replace_two, functions.replace, expression, operatorStrs[i], operators)
             display()
         }
     })
 }
 
-function inputSubtract(subtractStr, exp) {
-    // only zero -> replace 
-    // equal -> simplify and push operator
-    // zero -> push operator
-    // decimal -> push operator
-    // number -> push operator
-    // negative case 1 -> do nothing
-    // negative case 2 -> replace two
-    // operator -> push 
-
-    // only zero -> replace
-    // equal -> simplify and push
-    // decimal -> push
-    // zero -> push
-    // number -> push
-    // negative case 1 -> nothing
-    // negative case 2 -> replace two
-    // operator -> push
-    if (exp.length === 1 && exp[0] === '0') {
-        exp[exp.length - 1] = '-'
-        console.log(exp, 'empty')
-    } else if (exp.includes('=')) {
-        exp = [exp[exp.length - 1], subtractStr]
-        console.log(exp, "equal")
-    } else if (exp[exp.length - 1] === '0') {
-        exp.push(subtractStr)
-        console.log(exp, "zero")
-    } else if (exp[exp.length - 1].includes('.')) {
-        exp.push(subtractStr)
-        console.log(exp, 'decimal')
-    } else if (Number(exp[exp.length - 1])) {
-        exp.push(subtractStr)
-        console.log(exp, "number")
-    } else if (exp.length === 1 && exp[0] === '-') {
-        console.log(exp, 'negative case 1')
-        return exp
-    } else if ((!Number(exp[exp.length - 2]) || Number(exp[exp - 2] === 0)) && exp[exp.length - 1] === '-') {
-        exp.splice(expression.length - 2, 2, subtractStr)
-        console.log(exp, 'negative case 2')
-    } else {
-        exp.push(subtractStr)
-        console.log(exp, 'operator')
-    }
-    return exp
-}
+// subtract
 const subtractTag = document.querySelector('#subtract')
 // only zero -> replace
 // equal -> simplify and push
@@ -313,94 +268,52 @@ const subtractTag = document.querySelector('#subtract')
 // negative case 2 -> replace two
 // operator -> push
 subtractTag.addEventListener('click', () => {
+    togglePressed(subtractTag, 'operator-hover', 'operator-pressed')
     expression = input(functions.replace, functions.simplify_push, functions.push, functions.push, functions.push, functions.nothing, functions.replace_two, functions.push, expression, operatorStrs[3], operators)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === subtractTag.textContent) {
+        togglePressed(subtractTag, 'operator-hover', 'operator-pressed')
         expression = input(functions.replace, functions.simplify_push, functions.push, functions.push, functions.push, functions.nothing, functions.replace_two, functions.push, expression, operatorStrs[3], operators)
         display()
     }
 })
 
 // equal
-function inputEquals(equalsStr, exp, ops) {
-    // equal -> simplify 
-    // ... -> evaluate
-    // negative case 1 -> do nothing
-    // negative case 2 -> do nothing 
-    // operator -> do nothing
-
-    // only zero -> 
-    // equal
-    // zero
-    // decimal 
-    // number 
-    // negative case 1 
-    // negative case 2 
-    // operator 
-    if (exp.includes('=')) {
-        exp = [exp[exp.length - 1]]
-        console.log(exp, 'equal')
-    } else if (exp.length === 1 && exp[0] === '-') {
-        console.log(exp, 'negative case 1')
-        return exp
-    } else {
-        let expCp = [...exp]
-        for (let i = 0; i < expCp.length; i++) {
-            if (Number(expCp[i]) || Number(expCp[i]) === 0) {
-                expCp[i] = Number(expCp[i])
-            }
-        }
-        for (let i = 0; i < ops.length; i++) {
-            let opKeys = Object.keys(ops[i])
-            // while an element in expCp is also an operation, evaluate the first operation found
-            while (expCp.some((e) => opKeys.includes(e))) {
-                for (let k = 0; k < expCp.length; k++) {
-                    if (opKeys.includes(expCp[k])) {
-                        expCp[k] = ops[i][expCp[k]](expCp[k - 1], expCp[k + 1])
-                        expCp.splice(k - 1, 1)
-                        expCp.splice(k, 1)
-                        break
-                    }
-                }
-                console.log(expCp, 'expCp')
-            }
-        }
-        expCp[0] = String(expCp[0])
-        exp = exp.concat([equalsStr, expCp[0]])
-        console.log(exp, 'exp')
-    }
-    return exp
-}
 const equalsTag = document.querySelector('#equals')
+// only zero -> evaluate
+// equal -> simplify
+// zero -> evaluate
+// decimal -> evaluate
+// number -> evaluate
+// negative case 1 -> nothing
+// negative case 2 -> nothing
+// operator -> nothing
 equalsTag.addEventListener('click', () => {
-    expression = inputEquals(operatorStrs[4], expression, operators)
+    togglePressed(equalsTag, 'equals-hover', 'equals-pressed')
+    expression = input(functions.evaluate, functions.simplify, functions.evaluate, functions.evaluate, functions.evaluate, functions.nothing, functions.nothing, functions.nothing, expression, operatorStrs[4], operators)
     display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === equalsTag.textContent || e.key === 'Enter') {
-        expression = inputEquals(operatorStrs[4], expression, operators)
+        togglePressed(equalsTag, 'equals-hover', 'equals-pressed')
+        expression = input(functions.evaluate, functions.simplify, functions.evaluate, functions.evaluate, functions.evaluate, functions.nothing, functions.nothing, functions.nothing, expression, operatorStrs[4], operators)
         display()
     }
 })
 
 // clear
-function inputClear(exp) {
-    exp = ['0']
-    return exp
-}
 const clearTag = document.querySelector('#clear')
 clearTag.addEventListener('click', () => {
-    expression = inputClear(expression)
-    console.log(expression, 'clear')
-    expressionTag.textContent = '0'
-    displayTag.textContent = '0'
+    togglePressed(clearTag, 'clear-hover', 'clear-pressed')
+    expression = functions.clear()
+    display()
 })
 window.addEventListener('keyup', (e) => {
     if (e.key === 'Delete' || e.key === 'Backspace') {
-        expression = inputClear(expression)
-        console.log(expression, 'clear')
+        togglePressed(clearTag, 'clear-hover', 'clear-pressed')
+        expression = functions.clear()
         display()
     }
 })
