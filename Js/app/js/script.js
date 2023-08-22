@@ -1,7 +1,3 @@
-// todos:
-// style 
-// cull console logs and comments
-
 // keys
 let expression = ['0']
 // keys > textcontent gives html flexibility 
@@ -163,14 +159,6 @@ function togglePressed(tag, classsHoverStr, classPressedStr) {
 
 // digits
 const digitsTags = document.querySelectorAll('.digit')
-// only zero -> replace
-// equal -> simplify and replace
-// decimal - append
-// zero - replace
-// number - append
-// negative case 1 - append
-// negative case 2 - append
-// operator - push
 for (let i = 0; i < digitsTags.length; i++) {
     digitsTags[i].addEventListener('click', () => {
         togglePressed(digitsTags[i], 'num-hover', 'num-pressed')
@@ -188,14 +176,6 @@ for (let i = 0; i < digitsTags.length; i++) {
 
 // zero
 const zeroTag = document.querySelector('#zero')
-// only zero -> nothing
-// equal -> simplify and replace 
-// decimal -> append
-// zero -> nothing
-// number -> append
-// negative case 1 -> append
-// negative case 2 -> append
-// operator -> push
 zeroTag.addEventListener('click', () => {
     togglePressed(zeroTag, 'num-hover', 'num-pressed')
     expression = input(functions.nothing, functions.simplify_replace, functions.append, functions.nothing, functions.append, functions.append, functions.append, functions.push, expression, numbers[9], operators)
@@ -211,14 +191,6 @@ window.addEventListener('keyup', (e) => {
 
 // decimal
 const decimalTag = document.querySelector('#decimal')
-// only zero -> append
-// equal -> simplify and replace
-// decimal -> nothing
-// zero -> append
-// number -> append
-// negative case 1 -> append
-// negative case 2 -> append
-// operator -> push
 decimalTag.addEventListener('click', () => {
     togglePressed(decimalTag, 'num-hover', 'num-pressed')
     expression = input(functions.append, functions.simplify_replace, functions.nothing, functions.append, functions.append, functions.append, functions.append, functions.push, expression, numbers[10], operators)
@@ -234,14 +206,6 @@ window.addEventListener('keyup', (e) => {
 
 // operators
 const nonSubOpTags = document.querySelectorAll('.non-sub-op')
-// only zero -> push
-// equal -> simplify and push
-// decimal -> push
-// zero -> push
-// number -> push
-// negative case 1 -> nothing
-// negative case 2 -> replace two
-// operator -> replace
 for (let i = 0; i < nonSubOpTags.length; i++) {
     nonSubOpTags[i].addEventListener('click', () => {
         togglePressed(nonSubOpTags[i], 'operator-hover', 'operator-pressed')
@@ -259,14 +223,6 @@ for (let i = 0; i < nonSubOpTags.length; i++) {
 
 // subtract
 const subtractTag = document.querySelector('#subtract')
-// only zero -> replace
-// equal -> simplify and push
-// decimal -> push
-// zero -> push
-// number -> push
-// negative case 1 -> nothing
-// negative case 2 -> replace two
-// operator -> push
 subtractTag.addEventListener('click', () => {
     togglePressed(subtractTag, 'operator-hover', 'operator-pressed')
     expression = input(functions.replace, functions.simplify_push, functions.push, functions.push, functions.push, functions.nothing, functions.replace_two, functions.push, expression, operatorStrs[3], operators)
@@ -282,14 +238,6 @@ window.addEventListener('keyup', (e) => {
 
 // equal
 const equalsTag = document.querySelector('#equals')
-// only zero -> evaluate
-// equal -> simplify
-// zero -> evaluate
-// decimal -> evaluate
-// number -> evaluate
-// negative case 1 -> nothing
-// negative case 2 -> nothing
-// operator -> nothing
 equalsTag.addEventListener('click', () => {
     togglePressed(equalsTag, 'equals-hover', 'equals-pressed')
     expression = input(functions.evaluate, functions.simplify, functions.evaluate, functions.evaluate, functions.evaluate, functions.nothing, functions.nothing, functions.nothing, expression, operatorStrs[4], operators)
