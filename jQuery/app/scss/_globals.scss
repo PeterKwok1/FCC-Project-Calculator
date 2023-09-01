@@ -1,0 +1,180 @@
+$calculator: rgb(240, 226, 219);
+$highlight: rgb(255, 244, 236);
+$screen: rgb(241, 239, 236);
+$num: hsl(216, 52%, 79%);
+$num-hover: hsl(216, 52%, 84%);
+$num-pressed: hsl(216, 52%, 74%);
+$operator: hsl(216, 56%, 72%);
+$operator-hover: hsl(216, 56%, 77%);
+$operator-pressed: hsl(216, 56%, 67%);
+$clear: hsl(0, 63%, 65%);
+$clear-hover: hsl(0, 63%, 70%);
+$clear-pressed: hsl(0, 63%, 60%);
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    // border: 1px solid rgb(255, 0, 0);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: $highlight;
+}
+
+#calculator {
+    width: 340px;
+    margin: 50px auto 20px auto;
+    border: 1px solid rgb(127, 127, 127);
+    border-radius: 10px;
+    background-color: $calculator;
+    box-shadow: 0 0 2px 0px;
+}
+
+#screen {
+    display: grid;
+    gap: 5px;
+    margin: 10px;
+    border: 1px solid rgb(129, 129, 129);
+    border-radius: 2px;
+    overflow: auto;
+    background-color: $screen;
+    box-shadow: 0 0 1px 0px;
+}
+
+#expression {
+    height: 50px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: large;
+    padding: 0 10px 0 10px;
+}
+
+#display {
+    height: 75px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    font-size: x-large;
+    padding: 0 10px 0 10px;
+}
+
+#interface {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-template-rows: auto auto auto auto auto;
+}
+
+#setters {
+    grid-column: 1/5;
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5px;
+    padding: 0 10px 10px 10px;
+}
+
+.setter {
+    height: 75px;
+    width: 155px;
+    border: 1px solid rgb(93, 93, 93);
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    cursor: pointer;
+}
+
+.clear {
+    background-color: $clear;
+}
+
+.clear-hover:hover {
+    background-color: $clear-hover;
+}
+
+.clear-pressed {
+    background-color: $clear-pressed;
+}
+
+.equals {
+    background-color: $operator;
+}
+
+.equals-hover:hover {
+    background-color: $operator-hover;
+}
+
+.equals-pressed {
+    background-color: $operator-pressed;
+}
+
+#numpad {
+    grid-column: 1/4;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+    padding: 0 5px 10px 10px;
+}
+
+.num {
+    height: 75px;
+    width: 75px;
+    border: 1px solid rgb(90, 90, 90);
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    background-color: $num;
+    cursor: pointer;
+}
+
+.num-hover:hover {
+    background-color: $num-hover;
+}
+
+.num-pressed {
+    background-color: $num-pressed;
+}
+
+#zero {
+    grid-column: 1/3;
+    width: 155px;
+}
+
+#operators {
+    display: grid;
+    gap: 5px;
+    padding: 0 10px 10px 0;
+}
+
+.operator {
+    height: 75px;
+    width: 75px;
+    border: 1px solid rgb(85, 85, 85);
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    background-color: $operator;
+    cursor: pointer;
+}
+
+.operator-hover:hover {
+    background-color: $operator-hover
+}
+
+.operator-pressed {
+    background-color: $operator-pressed;
+}
+
+#by {
+    text-align: center;
+    font-style: italic;
+    font-size: small;
+    margin-bottom: 50px;
+}

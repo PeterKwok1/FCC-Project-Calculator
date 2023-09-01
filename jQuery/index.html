@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="app/scss/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="calculator">
+        <div id="screen">
+            <div id="expression">0</div>
+            <div id="display">0</div>
+        </div>
+        <div id="interface">
+            <div id="setters">
+                <div id="clear" class="setter clear clear-hover">A C</div>
+                <div id="equals" class="setter equals equals-hover">=</div>
+            </div>
+            <div id="numpad">
+                <div id="seven" class="num num-hover digit">7</div>
+                <div id="eight" class="num num-hover digit">8</div>
+                <div id="nine" class="num num-hover digit">9</div>
+                <div id="four" class="num num-hover digit">4</div>
+                <div id="five" class="num num-hover digit">5</div>
+                <div id="six" class="num num-hover digit">6</div>
+                <div id="one" class="num num-hover digit">1</div>
+                <div id="two" class="num num-hover digit">2</div>
+                <div id="three" class="num num-hover digit">3</div>
+                <div id="zero" class="num num-hover">0</div>
+                <div id="decimal" class="num num-hover">.</div>
+            </div>
+            <div id="operators">
+                <div id="multiply" class="operator operator-hover non-sub-op">*</div>
+                <div id="divide" class="operator operator-hover non-sub-op">/</div>
+                <div id="add" class="operator operator-hover non-sub-op">+</div>
+                <div id="subtract" class="operator operator-hover">-</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="by">by Peter Kwok</div>
+
+    <script src="app/js/script.js"></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</body>
+
+</html>
